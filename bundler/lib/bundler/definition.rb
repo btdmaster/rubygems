@@ -287,7 +287,7 @@ module Bundler
           # Run a resolve against the locally available gems
           Bundler.ui.debug("Found changes from the lockfile, re-resolving dependencies because #{change_reason}")
           expanded_dependencies = expand_dependencies(dependencies + metadata_dependencies, @remote)
-          Resolver.resolve(expanded_dependencies, source_requirements, last_resolve, gem_version_promoter, additional_base_requirements_for_resolve, platforms)
+          Resolver.resolve(expanded_dependencies, source_requirements, last_resolve, gem_version_promoter, platforms)
         end
       end
     end
@@ -914,21 +914,6 @@ module Bundler
         end
         requires
       end
-    end
-
-    def additional_base_requirements_for_resolve
-      return [] unless @locked_gems
-      dependencies_by_name = dependencies.inject({}) {|memo, dep| memo.update(dep.name => dep) }
-      @locked_gems.specs.reduce({}) do |requirements, locked_spec|
-        name = locked_spec.name
-        dependency = dependencies_by_name[name]
-        next requirements unless dependency
-        next requirements if @locked_gems.dependencies[name] != dependency
-        next requirements if dependency.source.is_a?(Source::Path)
-        dep = Gem::Dependency.new(name, ">= #{locked_spec.version}")
-        requirements[name] = DepProxy.get_proxy(dep, locked_spec.platform)
-        requirements
-      end.values
     end
 
     def equivalent_rubygems_remotes?(source)

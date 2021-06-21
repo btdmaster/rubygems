@@ -1,3 +1,15 @@
+# 3.2.21 / 2021-06-21
+
+## Enhancements:
+
+* Fix typo in OpenSSL detection. Pull request #4679 by osyoyu
+* Add the most recent licenses from spdx.org. Pull request #4662 by nobu
+
+## Bug fixes:
+
+* Create credentials folder when setting API keys if not there yet. Pull
+  request #4665 by deivid-rodriguez
+
 # 3.2.20 / 2021-06-11
 
 ## Security fixes:
